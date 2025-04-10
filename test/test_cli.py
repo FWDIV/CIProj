@@ -25,10 +25,6 @@ def test_add_parse(monkeypatch,args_input,expected):
     assert args.desc == expected["desc"]
     assert args.id == expected["id"]
 
-
-
-
-
 @pytest.mark.parametrize("args_input, expected",
                         [
                             (["<ignored script name>","delete","432"],{"id":432})
@@ -37,3 +33,16 @@ def test_delete_parse(monkeypatch,args_input,expected):
     parser = make_parser()
     args = simulate_cli_input(parser,monkeypatch,args_input)
     assert args.id == expected["id"]
+
+
+
+
+@pytest.mark.parametrize("args_input, expected",
+                        [
+                            (["<ignored script name>","update","432", "new description"],{"id":432,"desc":"new description"})
+                        ])
+def test_update_parse(monkeypatch,args_input,expected):
+    parser = make_parser()
+    args = simulate_cli_input(parser,monkeypatch,args_input)
+    assert args.id == expected["id"]
+    assert args.desc == expected["desc"]
