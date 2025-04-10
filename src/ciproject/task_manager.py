@@ -11,6 +11,40 @@ from enum import Enum
     List all tasks that are in progress
 """
 
+
+class Priority(Enum):
+    High = 2
+    Moderate = 1
+    Low = 0
+
+class Completeness(Enum):
+    """_summary_
+    """
+    Complete = 2
+    Incomplete = 1
+    InProgress = 0
+
+
+class Task:
+    """_summary_
+    Tasks are a mutable objects that hold state relating to an individual task in our task manager. They are able to be stored or read in a json file. 
+    All tasks are "complete", "incomplete" or "in_progress". Tasks can be updates, and those updates will be reflected int he stored json.
+    """
+    def __init__(self,id,desc,priority,):
+        pass
+    def mark_complete(self):
+        """_summary_
+
+        """
+        pass
+    def update(self, priority: Priority | None, completeness : Completeness | None ):
+        pass
+    def mark_incomplete(self):
+        pass
+    def mark_in_progress(self):
+        pass
+
+
 class TaskManager:
     """_summary_
         Our task manager class defines an object which will hold our tasks
@@ -80,34 +114,3 @@ class TaskManager:
                 the TaskManager's task list, separated by new lines.
         """
         pass
-
-class Task:
-    """_summary_
-    Tasks are a mutable objects that hold state relating to an individual task in our task manager. They are able to be stored or read in a json file. 
-    All tasks are "complete", "incomplete" or "in_progress". Tasks can be updates, and those updates will be reflected int he stored json.
-    """
-    def __init__(self,id,desc,priority,):
-        pass
-    def mark_complete(self):
-        """_summary_
-
-        """
-        pass
-    def update(self, priority: Priority | None, completeness : Completeness | None ):
-        pass
-    def mark_incomplete(self):
-        pass
-    def mark_in_progress(self):
-        pass
-
-class Priority(Enum):
-    High = 2
-    Moderate = 1
-    Low = 0
-
-class Completeness(Enum):
-    """_summary_
-    """
-    Complete = 2
-    Incomplete = 1
-    InProgress = 0
