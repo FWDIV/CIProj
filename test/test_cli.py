@@ -8,26 +8,33 @@ def test_parse_exists():
     parser = make_parser()
     assert parser != None
 
+def mock_handler(*args, **kwargs):
+    """mock handler to unit test parser without handlers"""
+    pass
+
+
 def simulate_cli_input(parser,monkeypatch, args_input):
     monkeypatch.setattr("sys.argv", args_input)
-    return parser.parse_args()
+    args = parser.parse_args()
+    monkeypatch.setattr(args,"func",mock_handler)
+    return args
 
 
 @pytest.mark.parametrize( "args_input, expected",
         [
-            (["<ignored script name>","add", "new task 1"], {"desc":"new task 1","id":None}),
-            (["<ignored script name>","add", "new task 1", "--id","432"],{"desc":"new task 1","id":432})
+            (["<ignored script name>","add", "new task 1"], {"desc":"new task 1","name":None}),
+            (["<ignored script name>","add", "new task 1", "--name","432"],{"desc":"new task 1","name":"432"})
         ]
 )
 def test_add_parse(monkeypatch,args_input,expected):
     parser = make_parser()
     args = simulate_cli_input(parser,monkeypatch,args_input)
     assert args.desc == expected["desc"]
-    assert args.id == expected["id"]
+    assert args.name == expected["name"]
 
 @pytest.mark.parametrize("args_input, expected",
                         [
-                            (["<ignored script name>","delete","432"],{"id":432})
+                            (["<ignored script name>","delete","432"],{"id":"432"})
                         ])
 def test_delete_parse(monkeypatch,args_input,expected):
     parser = make_parser()
@@ -39,7 +46,7 @@ def test_delete_parse(monkeypatch,args_input,expected):
 
 @pytest.mark.parametrize("args_input, expected",
                         [
-                            (["<ignored script name>","update","432", "new description"],{"id":432,"desc":"new description"})
+                            (["<ignored script name>","update","432", "new description"],{"id":"432","desc":"new description"})
                         ])
 def test_update_parse(monkeypatch,args_input,expected):
     parser = make_parser()

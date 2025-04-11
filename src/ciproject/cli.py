@@ -1,7 +1,6 @@
 import argparse
+from ciproject import handlers
 
-def print_args(args):
-    print(f"args, {args}!")
 
 def add_command(parser: argparse._SubParsersAction )-> argparse.ArgumentParser:
     """_summary_
@@ -17,8 +16,8 @@ def add_command(parser: argparse._SubParsersAction )-> argparse.ArgumentParser:
 
     parser_add_task = parser.add_parser("add", help="add a task")
     parser_add_task.add_argument("desc",type=str,help="Required, a description of a task")
-    parser_add_task.add_argument("--id",type=int,help="optional, an id for the task")
-    parser_add_task.set_defaults(func=print_args)
+    parser_add_task.add_argument("--name",type=str,help="optional, a name for the task which maps to an id")
+    parser_add_task.set_defaults(func=handlers.add_task_handler)
     return parser_add_task
 
 def delete_command(parser: argparse._SubParsersAction ):
@@ -31,8 +30,8 @@ def delete_command(parser: argparse._SubParsersAction ):
     """
 
     parser_delete_task = parser.add_parser("delete", help="delete a task")
-    parser_delete_task.add_argument("id", type=int, help="Required, the id of the task you want to delete")
-    parser_delete_task.set_defaults(func=print_args)
+    parser_delete_task.add_argument("id", type=str, help="Required, the name or id of the task you want to delete")
+    parser_delete_task.set_defaults(func=handlers.delete_task_handler)
 
     return parser_delete_task
     
@@ -48,7 +47,11 @@ def update_command(parser: argparse._SubParsersAction )-> argparse.ArgumentParse
 
     """
 
-    pass
+    parser_update_task = parser.add_parser("update", help="update a task with a new description")
+    parser_update_task.add_argument("id", type=str, help="Required, the name or id of the task you want to update")
+    parser_update_task.add_argument("desc", type=str, help="Required, the new description of the task you want updated")
+    parser_update_task.set_defaults(func=handlers.update_task_handler)
+
 def list_command(parser: argparse._SubParsersAction )-> argparse.ArgumentParser:
     """_summary_
     Creates the subparser for the "list" command in the cli
@@ -82,6 +85,7 @@ def make_parser():
     #We attach subparser commands to our parser in seperate modularized functions
     add_command(sub_parsers)
     delete_command(sub_parsers)
+    update_command(sub_parsers)
 
     sub_parsers.required = True
 
