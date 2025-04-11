@@ -36,10 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: install base requirements
       run: |
-          pip install -r requirements/base.txt
-    - name: install test requirements
-      run: |
-          pip install -r requirements/test.txt
+          pip install -r ./requirements/base.txt -r ./requirements/test.txt
     - name: setup src package
       run: |
         pip install -e .
